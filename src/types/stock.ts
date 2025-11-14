@@ -12,6 +12,7 @@ export interface Stock {
   dayHigh: number;
   dayLow: number;
   avgVolume: number;
+  avgVolume20D: number;
   dividend: number;
   dividendYield: number;
 }

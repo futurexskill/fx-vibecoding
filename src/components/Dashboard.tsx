@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import StockCard from './StockCard';
+import VolumeChart from './VolumeChart';
 import { Stock } from '../types/stock';
+import { VolumeChartData } from '../types/chart';
 import stocksData from '../data/stocks.json';
 import './Dashboard.css';
 
@@ -36,7 +38,16 @@ const Dashboard = () => {
       
       <div className="stocks-grid">
         {stocks.map((stock) => (
-          <StockCard key={stock.symbol} stock={stock} />
+          <div key={stock.symbol} className="stock-item">
+            <StockCard stock={stock} />
+            <VolumeChart 
+              data={{
+                todayVolume: stock.volume,
+                avgVolume20D: stock.avgVolume20D,
+                symbol: stock.symbol
+              }}
+            />
+          </div>
         ))}
       </div>
       

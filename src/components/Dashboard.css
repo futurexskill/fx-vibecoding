@@ -29,6 +29,12 @@
   margin-bottom: 2rem;
 }
 
+.stock-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 .loading {
   display: flex;
   flex-direction: column;
