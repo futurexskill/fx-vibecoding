@@ -35,7 +35,7 @@ const StockCard = ({ stock }: StockCardProps) => {
             {isPositive ? '+' : ''}${stock.change.toFixed(2)}
           </span>
           <span className="change-percent">
-            ({isPositive ? '+' : ''}{stock.changePercent.toFixed(2)}%)
+            ({isPositive ? '+' : ''}{((stock.change / (stock.price - stock.change)) * 100).toFixed(2)}%)
           </span>
         </div>
       </div>
@@ -51,7 +51,7 @@ const StockCard = ({ stock }: StockCardProps) => {
         </div>
         <div className="detail-row">
           <span className="label">52W Range:</span>
-          <span className="value">${stock.low52Week.toFixed(2)} - ${stock.high52Week.toFixed(2)}</span>
+          <span className="value">${stock.yearLow.toFixed(2)} - ${stock.yearHigh.toFixed(2)}</span>
         </div>
         <div className="detail-row">
           <span className="label">Volume:</span>
@@ -63,11 +63,11 @@ const StockCard = ({ stock }: StockCardProps) => {
         </div>
         <div className="detail-row">
           <span className="label">P/E Ratio:</span>
-          <span className="value">{stock.peRatio.toFixed(2)}</span>
+          <span className="value">{stock.pe > 0 ? stock.pe.toFixed(2) : 'N/A'}</span>
         </div>
         <div className="detail-row">
-          <span className="label">Dividend:</span>
-          <span className="value">${stock.dividend.toFixed(2)} ({(stock.dividendYield * 100).toFixed(2)}%)</span>
+          <span className="label">RSI:</span>
+          <span className="value">{stock.rsi.toFixed(1)}</span>
         </div>
       </div>
     </div>

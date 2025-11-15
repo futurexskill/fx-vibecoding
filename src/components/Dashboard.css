@@ -94,3 +94,68 @@
     padding: 2rem 1rem;
   }
 }
+
+/* New styles for enhanced functionality */
+.stock-item.clickable {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stock-item.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.refresh-button {
+  background: rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.refresh-button:hover {
+  background: rgba(46, 204, 113, 0.3);
+  transform: translateY(-2px);
+}
+
+.error-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  backdrop-filter: blur(20px);
+  color: white;
+  margin: 20px;
+}
+
+.error-state h3 {
+  color: #e74c3c;
+  margin-bottom: 16px;
+}
+
+.retry-button {
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  margin-top: 16px;
+}
+
+.retry-button:hover {
+  background: rgba(231, 76, 60, 0.3);
+  transform: translateY(-2px);
+}

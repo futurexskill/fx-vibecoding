@@ -2,6 +2,7 @@ import json
 import boto3
 from decimal import Decimal
 from boto3.dynamodb.conditions import Key
+from urllib.parse import unquote
 
 def decimal_default(obj):
     """Convert Decimal to float for JSON serialization"""
@@ -41,8 +42,9 @@ def lambda_handler(event, context):
         
         # Parse path parameters
         if path.startswith('/stocks/'):
-            # Get specific stock by symbol
-            symbol = path.split('/')[-1].upper()
+            # Get specific stock by symbol and decode URL encoding
+            encoded_symbol = path.split('/')[-1]
+            symbol = unquote(encoded_symbol).upper()
             
             response = table.get_item(
                 Key={'ticker': symbol}
