@@ -1,0 +1,1 @@
+{"statusCode": 200, "body": "{\"message\": \"Stock data processed successfully\", \"processed_count\": 112, \"failed_count\": 0, \"total_symbols\": 113, \"generated_at\": \"2025-11-14T22:57:36.937928+00:00\"}"}
