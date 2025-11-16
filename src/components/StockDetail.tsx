@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Stock } from '../types/stock';
+import { SEOManager } from '../utils/seo';
+import { StockAnalytics } from '../utils/analytics';
 import './StockDetail.css';
 
 const API_BASE_URL = 'https://7kiye42406.execute-api.us-east-1.amazonaws.com/prod';
@@ -28,9 +30,33 @@ const StockDetail = ({ symbol, onBack }: StockDetailProps) => {
       
       const stockData = await response.json();
       setStock(stockData);
+      
+      // Update SEO for stock page
+      if (stockData) {
+        const currentPrice = SEOManager.formatPrice(stockData.current_price || 0);
+        const marketCap = SEOManager.formatMarketCap(stockData.market_cap || 0);
+        const changeText = stockData.pct_change >= 0 ? 'up' : 'down';
+        
+        SEOManager.updateMeta({
+          title: `${stockData.name} (${stockData.ticker}) Stock Price - ${currentPrice} | Stock Dashboard`,
+          description: `${stockData.name} (${stockData.ticker}) stock is ${changeText} ${Math.abs(stockData.pct_change || 0).toFixed(2)}% with current price ${currentPrice}. Market cap: ${marketCap}. View real-time data, charts, and analytics.`,
+          keywords: `${stockData.ticker}, ${stockData.name}, stock price, ${stockData.sector}, market data, financial analytics`,
+          canonicalUrl: window.location.origin + `/#/stock/${encodeURIComponent(stockData.ticker)}`
+        });
+        
+        // Generate structured data for this stock
+        SEOManager.generateStockStructuredData(stockData);
+        
+        // Track stock view in Google Analytics
+        StockAnalytics.trackDetailedStockView(stockData);
+        StockAnalytics.trackPageView(`/stock/${stockData.symbol}`, `${stockData.name} (${stockData.symbol}) - Stock Detail`);
+      }
     } catch (err) {
       console.error('Error fetching stock:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch stock');
+      
+      // Track error in analytics
+      StockAnalytics.trackError(err instanceof Error ? err : new Error('Failed to fetch stock'), `stock_detail_${symbol}`);
     } finally {
       setLoading(false);
     }
@@ -73,11 +99,27 @@ const StockDetail = ({ symbol, onBack }: StockDetailProps) => {
 
   return (
     <div className="stock-detail">
+      {/* Breadcrumb Navigation */}
+      <nav className="breadcrumb" aria-label="Breadcrumb navigation">
+        <ol>
+          <li><a href="#/" onClick={onBack}>Stock Dashboard</a></li>
+          <li aria-current="page">{stock.name} ({stock.symbol})</li>
+        </ol>
+      </nav>
+      
       <div className="stock-detail-header">
-        <button onClick={onBack} className="back-button">
+        <button 
+          onClick={onBack} 
+          className="back-button"
+          aria-label="Go back to stock dashboard"
+        >
           ← Back to Dashboard
         </button>
-        <button onClick={fetchStock} className="refresh-button">
+        <button 
+          onClick={fetchStock} 
+          className="refresh-button"
+          aria-label="Refresh stock data"
+        >
           Refresh
         </button>
       </div>

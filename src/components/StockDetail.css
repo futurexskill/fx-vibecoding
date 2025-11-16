@@ -5,6 +5,48 @@
   color: white;
 }
 
+/* Breadcrumb Navigation */
+.breadcrumb {
+  margin-bottom: 20px;
+}
+
+.breadcrumb ol {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  font-size: 14px;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '›';
+  margin: 0 8px;
+  opacity: 0.6;
+  font-size: 16px;
+}
+
+.breadcrumb a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.breadcrumb li[aria-current="page"] {
+  color: white;
+  font-weight: 500;
+}
+
 .stock-detail-header {
   display: flex;
   justify-content: space-between;

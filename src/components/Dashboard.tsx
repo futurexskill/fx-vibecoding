@@ -3,6 +3,7 @@ import StockCard from './StockCard';
 import VolumeChart from './VolumeChart';
 import { Stock } from '../types/stock';
 import { VolumeChartData } from '../types/chart';
+import { GoogleAnalytics } from '../utils/analytics';
 import './Dashboard.css';
 
 const API_BASE_URL = 'https://7kiye42406.execute-api.us-east-1.amazonaws.com/prod';
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchStocks = async () => {
+    const startTime = Date.now();
     try {
       setLoading(true);
       setError(null);
@@ -24,9 +26,22 @@ const Dashboard = () => {
       
       const data = await response.json();
       setStocks(data.stocks || []);
+      
+      // Track successful API call
+      const responseTime = Date.now() - startTime;
+      GoogleAnalytics.trackAPICall('/stocks', true, responseTime);
+      GoogleAnalytics.trackDashboardAction('data_loaded', { 
+        stock_count: data.stocks?.length || 0,
+        load_time: responseTime 
+      });
     } catch (err) {
       console.error('Error fetching stocks:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch stocks');
+      
+      // Track failed API call
+      const responseTime = Date.now() - startTime;
+      GoogleAnalytics.trackAPICall('/stocks', false, responseTime);
+      GoogleAnalytics.trackError(err instanceof Error ? err : new Error('Failed to fetch stocks'), 'dashboard_data_load');
     } finally {
       setLoading(false);
     }
@@ -62,6 +77,9 @@ const Dashboard = () => {
   }
 
   const handleStockClick = (symbol: string) => {
+    // Track stock selection
+    GoogleAnalytics.trackDashboardAction('stock_selected', { stock_symbol: symbol });
+    
     // URL encode the symbol to handle special characters
     const encodedSymbol = encodeURIComponent(symbol);
     window.location.hash = `#/stock/${encodedSymbol}`;
@@ -70,9 +88,16 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h2>Stock Market Dashboard</h2>
+        <h1>Stock Market Dashboard</h1>
         <p>Live data from {stocks.length} stocks • Click any stock for details</p>
-        <button onClick={fetchStocks} className="refresh-button">
+        <button 
+          onClick={() => {
+            GoogleAnalytics.trackDashboardAction('manual_refresh');
+            fetchStocks();
+          }} 
+          className="refresh-button"
+          aria-label="Refresh stock data"
+        >
           Refresh Data
         </button>
       </div>
