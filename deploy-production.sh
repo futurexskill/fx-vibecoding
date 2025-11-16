@@ -20,7 +20,7 @@ BUILD_DIR="dist"
 LAMBDA_FUNCTIONS=("stock-data-processor" "stock-api")
 
 # AWS Configuration (update these with your actual values)
-S3_BUCKET="fx-stock-dashboard-prod"  # Update with your actual bucket name
+S3_BUCKET="vibecoding-stock-dashboard-1763148682"  # Update with your actual bucket name
 CLOUDFRONT_DISTRIBUTION_ID=""        # Add if you have CloudFront
 REGION="us-east-1"
 
