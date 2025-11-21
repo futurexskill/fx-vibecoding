@@ -1,8 +1,8 @@
 .stock-detail {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   padding: 20px;
-  color: white;
+  color: #1a1a1a;
 }
 
 /* Breadcrumb Navigation */
@@ -32,18 +32,18 @@
 }
 
 .breadcrumb a {
-  color: rgba(255, 255, 255, 0.8);
+  color: #666666;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumb a:hover {
-  color: white;
+  color: #1a1a1a;
   text-decoration: underline;
 }
 
 .breadcrumb li[aria-current="page"] {
-  color: white;
+  color: #1a1a1a;
   font-weight: 500;
 }
 
