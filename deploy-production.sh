@@ -190,15 +190,34 @@ deploy_frontend() {
         --content-type "text/html" \
         --region ${REGION}
     
-    # CSS and JS files - long cache with hashed names
-    aws s3 cp s3://${S3_BUCKET}/ s3://${S3_BUCKET}/ \
-        --recursive \
-        --exclude "*" \
-        --include "*.css" \
-        --include "*.js" \
-        --metadata-directive REPLACE \
-        --cache-control "public, max-age=31536000, immutable" \
-        --region ${REGION}
+    # CSS files - set correct MIME type and cache headers
+    for css_file in $(aws s3 ls s3://${S3_BUCKET}/assets/ --recursive | grep '\.css$' | awk '{print $4}'); do
+        echo "Setting MIME type for ${css_file}"
+        aws s3 cp s3://${S3_BUCKET}/${css_file} s3://${S3_BUCKET}/${css_file} \
+            --metadata-directive REPLACE \
+            --cache-control "public, max-age=31536000, immutable" \
+            --content-type "text/css" \
+            --region ${REGION}
+    done
+    
+    # JS files - set correct MIME type and cache headers
+    for js_file in $(aws s3 ls s3://${S3_BUCKET}/assets/ --recursive | grep '\.js$' | awk '{print $4}'); do
+        echo "Setting MIME type for ${js_file}"
+        aws s3 cp s3://${S3_BUCKET}/${js_file} s3://${S3_BUCKET}/${js_file} \
+            --metadata-directive REPLACE \
+            --cache-control "public, max-age=31536000, immutable" \
+            --content-type "application/javascript" \
+            --region ${REGION}
+    done
+    
+    # SVG files - set correct MIME type
+    for svg_file in $(aws s3 ls s3://${S3_BUCKET}/ --recursive | grep '\.svg$' | awk '{print $4}'); do
+        echo "Setting MIME type for ${svg_file}"
+        aws s3 cp s3://${S3_BUCKET}/${svg_file} s3://${S3_BUCKET}/${svg_file} \
+            --metadata-directive REPLACE \
+            --content-type "image/svg+xml" \
+            --region ${REGION}
+    done
     
     echo -e "${GREEN}✅ Frontend deployed successfully${NC}"
     echo ""
