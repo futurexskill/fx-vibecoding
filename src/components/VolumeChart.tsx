@@ -31,7 +31,9 @@ const VolumeChart = ({ data }: VolumeChartProps) => {
   return (
     <div className="volume-chart">
       <div className="chart-header">
-        <h3>Volume Analysis - {symbol}</h3>
+        <div className="chart-title-row">
+          <h3>Volume Analysis - {symbol}</h3>
+        </div>
         <div className={`volume-indicator ${isAboveAverage ? 'above-average' : 'below-average'}`}>
           {isAboveAverage ? '↗️' : '↘️'} {isAboveAverage ? '+' : ''}{percentageDiff}% vs 20D Avg
         </div>
